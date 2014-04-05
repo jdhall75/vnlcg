@@ -10,9 +10,13 @@ mysql -u <username> -h <hostname> -p virtnetlab < virtlab.sql
 Edit the following variables in index.php:
 
 define('DB_SERVER', 'localhost');
+
 define('DB_USER', 'dbuser');
+
 define('DB_PASS', 'dbpassword');
+
 define('DB_DATABASE', 'virtnetlab');
+
 
 From there, you are good to go. You can create devices and create cross connects between the devices, which will generate a KVM config that looks like:
 
