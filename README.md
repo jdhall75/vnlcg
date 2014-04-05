@@ -16,7 +16,7 @@ define('DB_DATABASE', 'virtnetlab');
 
 From there, you are good to go. You can create devices and create cross connects between the devices, which will generate a KVM config that looks like:
 
-# a
+
 /bin/qemu-kvm -cpu kvm64 -nographic -m 2548 -hda /var/lib/libvirt/images/a-xr.raw \
  -serial telnet::8110,server,nowait \
  -net nic,model=virtio,vlan=1000,macaddr=00:01:00:ff:66:10 \
@@ -38,7 +38,7 @@ From there, you are good to go. You can create devices and create cross connects
  -net socket,vlan=15,connect=127.0.0.1:7015 \
  -net tap,ifname=tap10,vlan=1000,script=no \
 
-# b
+
 /bin/qemu-kvm -cpu kvm64 -nographic -m 2548 -hda /var/lib/libvirt/images/b-xr.raw \
  -serial telnet::8111,server,nowait \
  -net nic,model=virtio,vlan=1000,macaddr=00:01:00:ff:66:11 \
