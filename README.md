@@ -5,7 +5,7 @@ Virtual Network Lab Config Generator
 
 Install
 
-mysql -u <username> -h <hostname> -p virtnetlab < virtlab.sql
+mysql -u {username} -h {hostname} -p virtnetlab < virtlab.sql
 
 Edit the following variables in index.php:
 
