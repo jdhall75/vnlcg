@@ -152,7 +152,7 @@ while($devices = $db->fetch($devrows)) {
 		}
 	}
 ?>
- -net tap,ifname=tap<?php echo $devices['DEV_ID']; ?>,vlan=1000,script=no \
+ -net tap,ifname=tap<?php echo $devices['DEV_ID']; ?>,vlan=1000,script=no &
 
 <?php
 }
