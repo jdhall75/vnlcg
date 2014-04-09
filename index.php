@@ -5,21 +5,28 @@ define('DB_USER', 'dbuser');
 define('DB_PASS', 'dbpassword');
 define('DB_DATABASE', 'virtnetlab');
 
+# Temporary Hypervisor Variable
+$hypervisor = "hyper1";
+
 $db = Database::obtain(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 $db->connect();
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>XRVR and CSR1000V Network Lab Creator</title>
+		<title>Virtual Network Lab Config Generator</title>
 		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
 	</head>
 	<body>
+	<a name="top"></a>
 	<div>
-		<p>| <a href="/">Home</a> | <a href="/?c=reset">Reset VLAN and Device ID</a> |</p>
-		<h1>XRVR and CSR1000V Network Lab Creator</h1>
+		<p style="text-align: center;">| <a href="/">Home</a> | <a href="/?c=reset">Reset VLAN and Device ID</a> | <a href="#add_device">Add a Device</a> | <a href="#list_devices">List Devices</a> | <a href="#create_xconnect">Create a Device Cross Connect</a> | <a href="#list_xconnect">List Device Cross Connects</a> | <a href="#kvm_config">View KVM Configuration</a> |</p>
+		<h1>Virtual Network Lab Config Generator</h1>
+		<p>The "Virtual Network Lab Config Generator" is a simple web application that generates the KVM Hypervisor configuration so that you can easily and quickly spin up complex virtual networks utilizing the Cisco IOS-XR (XRv) and IOS-XE (CSR1000v) images. Both images are available from the <a href="http://www.cisco.com/" target="_blank">Cisco</a> Website. This will allow you to spend more time learning about networking and less time building the configurations that support Cisco studies. The code is available for download on <a href="https://github.com/jtdub/vnlcg" target="_blank">Github.</a></p>
+		<a name="add_device"></a>
 		<h3>Add a Device</h3>
-		<form action="?c=add" name="ADD_DEV" method="post">
+		<p>| <a href="#top">Back to Top</a> |</p>
+		<form action="?c=add#add_device" name="ADD_DEV" method="post">
 			<table>
 				<tr>
 					<td>Device Name</td>
@@ -38,12 +45,15 @@ $db->connect();
 		<input type="submit" name="submit" value="Submit" />
 		</form> 
 	
+		<a name="list_devices"></a>
 		<h3>List Devices</h3>
+		<p>| <a href="#top">Back to Top</a> |</p>
 		<table>
 			<tr>
 				<td>Device ID</td>
 				<td>Device Name</td>
 				<td>Device Type</td>
+				<td>Access Device</td>
 				<td>Delete Device</td>
 			</tr>
 			<?php
@@ -55,14 +65,17 @@ $db->connect();
 					<td><?php echo $device['DEV_ID']; ?></td>
 					<td><?php echo $device['DEVNAME']; ?> </td>
 					<td><?php echo $device['DEVTYPE']; ?> </td>
+					<td><a href="telnet://<?php echo $hypervisor; ?>:81<?php echo $device['DEV_ID']; ?>">Connect</td>
 					<td><a href="?d=<?php echo $device['DEV_ID']; ?>">Delete</td>
 				</tr>
 				<?php
 			}
 			?>
 		</table>
+		<a name="create_xconnect"></a>
 		<h3>Create a Device Cross Connect</h3>
-		<form action="?c=xconnect" name="ADD_XCONNECT" method="post"> 
+		<p>| <a href="#top">Back to Top</a> |</p>
+		<form action="?c=xconnect#create_xconnect" name="ADD_XCONNECT" method="post"> 
 			<table>
 				<tr>
 					<td>Listen Side</td>
@@ -98,7 +111,9 @@ $db->connect();
 			</table>
 			<input type="submit" name="submit" value="Submit" />
 		</form>
+		<a name="list_xconnect"></a>
 		<h3>List Device Cross Connects</h3>
+		<p>| <a href="#top">Back to Top</a> |</p>
 		<table>
 			<tr>
 				<td>VLAN</td>
@@ -121,8 +136,10 @@ $db->connect();
 			}
 			?>
 		</table>
+		<a name="kvm_config"></a>
 		<h3>Generate Configuration</h3>
-		<textarea rows="100" cols="100">
+		<p>| <a href="#top">Back to Top</a> |</p>
+		<textarea rows="50" cols="100">
 <?php
 $dev_sql = "SELECT * FROM DEVICE";
 $devrows = $db->query($dev_sql);
@@ -153,7 +170,7 @@ while($devices = $db->fetch($devrows)) {
 	}
 ?>
  -net tap,ifname=tap<?php echo $devices['DEV_ID']; ?>,vlan=1000,script=no &
-
+sleep 2
 <?php
 }
 ?>
@@ -169,19 +186,16 @@ if($_GET['c'] == "add") {
 	$add['DEVTYPE'] = $_POST['DEVTYPE'];
 
 	$db->insert("DEVICE", $add);
-	header('Location: /');
 }
 
 if(isset($_GET['d'])) {
 	$sql = "DELETE FROM DEVICE WHERE DEV_ID='{$_GET['d']}'";
 	$db->query($sql);
-	header('Location: /');
 }
 
 if(isset($_GET['dx'])) {
 	$sql = "DELETE FROM XCONNECT WHERE VLAN_ID='{$_GET['dx']}'";
 	$db->query($sql);
-	$header('Location: /');
 }
 
 if($_GET['c'] == "xconnect") {
@@ -189,7 +203,6 @@ if($_GET['c'] == "xconnect") {
 	$xconnect['DEV_LISTEN'] = $_POST['DEV_LISTEN'];
 
 	$db->insert("XCONNECT", $xconnect);
-	header('Location: /');
 }
 
 if($_GET['c'] == "reset") {
@@ -198,6 +211,5 @@ if($_GET['c'] == "reset") {
 
 	$db->query($devsql);
 	$db->query($xconsql);
-	header('Location: /');
 }
 $db->close();
