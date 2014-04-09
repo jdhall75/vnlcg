@@ -1,3 +1,26 @@
+table {
+	border: 1px solid;
+}
 td {
 	border: 1px solid;
+	font-family: Courier;
+	font-size: 14px;
+}
+h1,
+h2,
+h3 {
+	font-family: sans-serif
+}
+p {
+	font-size: 14px;
+	font-family: Courier;
+}
+a {
+	color: gray;
+	text-decoration: none;
+	font-weight: bold;
+}
+a:hover {
+	color: red;
+	font-weight: bold;
 }
