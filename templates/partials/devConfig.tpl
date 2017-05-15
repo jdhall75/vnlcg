@@ -1,8 +1,7 @@
 <div id="config" class="section" style="display:none">
     
 		<h3>Generate Configuration</h3>
-		<p>| <a href="#top">Back to Top</a> |</p>
-		<textarea rows="50" cols="100">
+		<textarea rows="20" cols="100">
 <?php
 
 foreach($devices as $device) {

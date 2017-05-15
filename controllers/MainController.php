@@ -11,6 +11,22 @@ class MainController {
         $hostMapper  = new \Mind\db\HostMapper($this->container->db);
         //$imageMapper = new ImageMapper($this->container->db);
         $xconnMapper = new \Mind\db\XconnMapper($this->container->db);
+       
+        $image_path = $this->container->get('settings')['images']['base_path'];
+        $file_ext = $this->container->get('settings')['images']['file_ext'];
+        $tplData['images'] = [];
+        
+        $dir_iterator = new RecursiveDirectoryIterator($image_path);
+        $iterator = new  RecursiveIteratorIterator($dir_iterator,
+            RecursiveIteratorIterator::SELF_FIRST);
+        
+        foreach($iterator as $file) {
+            if($file->isFile()){
+                $tplData['images'][]['name'] = $file->getBasename();
+                $tplData['images'][]['fullPath'] = $file->getPathName();
+            }
+        }
+       
         
         //$tplData['imageData'] = 
         $tplData['title'] = 'VNLCG-NG';

@@ -27,13 +27,15 @@
         <button class="w3-bar-item w3-button tablink" onclick="openSection(event, 'connections')">Connections</button>
         <button class="w3-bar-item w3-button tablink" onclick="openSection(event, 'config')">Configuration</button>
     </div>
-    <div id="content" style="margin-left:130px">
+    <div id="content" style="margin-left:130px; padding-left:20px">
         <?php $this->insert("partials/addDevice", ['devices' => $devices]); ?>
         
         <?php $this->insert("partials/addXconn", ['devices' => $devices, 'xconns' => $xconns]); ?>
         
 		    
         <?php $this->insert('partials/devConfig', ['devices' => $devices, 'xconns' => $xconns]); ?>
+        
+        <?php //echo "<pre>". print_r($images) ."</pre>"; ?>
         
 	</div>
 	<script type="text/javascript">

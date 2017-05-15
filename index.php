@@ -9,6 +9,7 @@ require 'vendor/autoload.php';
 // import configs for the app
 require 'config/app.php';
 require 'config/db.php';
+require 'config/config.php';
 
 require 'controllers/MainController.php';
 require 'mapper/HostMapper.php';
